@@ -122,8 +122,17 @@ var CoreLoader = (function () {
 				_spinner.spin(_spinner.elm);
 				
 				if(_fnReady) {
-					loaderState = 3;
-					_fnReady();
+					var fnWaitForCore = function() {
+						if(!window.sap || !window.sap.ui) {
+							alert('Do you use CacheBuster? This will not work, yet.')
+							setTimeout(fnWaitForCore, 3000);
+						}
+						else {
+							loaderState = 3;
+							_fnReady();
+						}
+					}
+					fnWaitForCore();
 				}
 				else loaderState = 4;
 
